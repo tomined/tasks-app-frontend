@@ -1,10 +1,13 @@
 import { Box, Button, FormControl, FormErrorMessage, FormLabel, Heading, Input, Spinner, Stack, Text, useToast } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { PiBalloonFill, PiPassword } from "react-icons/pi"
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
+import httpClient from './utils/httpClient';
 
 function LoginPage() {
     const toast = useToast()
+    const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false)
@@ -20,28 +23,18 @@ function LoginPage() {
 
         if (!email || !password) {
             setError(true)
-            return
+            return;
         }
 
         setLoading(true)
 
         try {
-
-            const response = await fetch("http://localhost:5000/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                // zmiana JSONA na obiekt user (wysyłam do bazy)
-                //body: JSON.stringify(user)
-                body: JSON.stringify({
-                    email,
-                    password
-                })
-
+            
+            const {data} = await httpClient.post("/login",{
+                email,
+                password
             })
-            // zamiana respone na odpowiedz, którą moge odczytac JS
-            const data = await response.json()
+            console.log(data)
 
             toast({
                 title: data.message,
@@ -49,7 +42,7 @@ function LoginPage() {
                 duration: 3000,
                 isClosable: true,
             })
-
+            navigate("/")
         } catch (error) {
             console.log(error)
 
