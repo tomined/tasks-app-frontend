@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { PiBalloonFill, PiPassword } from "react-icons/pi"
 import { Link, useNavigate } from 'react-router-dom';
 
-import httpClient from './utils/httpClient';
+import httpClient from '../utils/httpClient';
 
 function LoginPage() {
     const toast = useToast()

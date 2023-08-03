@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import httpClient from './utils/httpClient'
+import httpClient from '../utils/httpClient'
 import userEvent from '@testing-library/user-event';
 import { Button, useToast } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
