@@ -3,6 +3,8 @@ import React, { useState } from 'react'
 import { PiBalloonFill, PiPassword } from "react-icons/pi"
 import { Link, useNavigate } from 'react-router-dom';
 
+import {AiFillEye, AiFillEyeInvisible} from 'react-icons/ai'
+
 import httpClient from '../utils/httpClient';
 
 function LoginPage() {
@@ -12,6 +14,8 @@ function LoginPage() {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
+
+    const [isVisible, setIsVisible] = useState(false);
 
     const changeEmail = (e) => setEmail(e.target.value)
     const changePassword = (e) => setPassword(e.target.value)
@@ -90,7 +94,22 @@ function LoginPage() {
 
                 <FormControl isInvalid={error}>
                     <FormLabel>Hasło</FormLabel>
-                    <Input onChange={changePassword} placeholder='Podaj swoje hasło' />
+                    <Input 
+                        type={isVisible ? 'password' : 'text'} 
+                        onChange={changePassword} 
+                        placeholder='Podaj swoje hasło' 
+                    />
+                    <Box 
+                        onClick={()=>setIsVisible(!isVisible)} 
+                        pos="absolute" 
+                        bottom="6px" 
+                        right="10px"
+                        zIndex={10}
+                    >
+                    {isVisible ? <AiFillEyeInvisible size={26}/> : <AiFillEye size={26}/>}
+                    </Box>
+                    
+
                     {error && <FormErrorMessage>To pole jest wymagane</FormErrorMessage>}
                 </FormControl>
 
