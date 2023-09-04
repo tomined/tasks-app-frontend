@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import httpClient from '../utils/httpClient'
 import userEvent from '@testing-library/user-event';
-import { Button, Container, useToast } from '@chakra-ui/react';
+import { Box, Button, Container, SimpleGrid, useToast } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import TaskCard from '../components/TaskCard';
 import { deleteTask } from '../utils/deleteTask';
+import { DrawerComponent } from '../components/Drawer';
 
 const HomePage = () => {
 
@@ -69,17 +70,41 @@ const HomePage = () => {
 
     };
 
+    if (!user) {
+        return (
+            <Container maxW="6xl">
+                <h2>Odmowa dostępu</h2>
+                <Button onClick={backToLogin} colorScheme="green" size="lg">
+                    Zaloguj
+                </Button>
+            </Container>
+        )
+    }
+
     return (
         <Container maxW="6xl">
-            <h2>{user ? user.message : "Odmowa dostepu"}</h2>
-            <Button onClick={user ? logout : backToLogin} colorScheme="green" size="lg">
-                {user ? "Wyloguj" : "Zaloguj"}
-            </Button>
+            <Box
+                bg="green.500" // Set the background color to green
+                color="white" // Set the text color to white
+                p={4} // Set padding
+                fontWeight="bold" // Set font weight to bold
+                boxShadow="md" // Add a shadow
+                mb={10}
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+            >
+                {" "}
+                <h2>{user.message}</h2>
+                <Button onClick={logout} colorScheme="gray" size="lg">
+                    Wyloguj
+                </Button>
+            </Box>
 
-            <div>
+            <SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} spacing={4}>
                 {tasks.map((item) => <TaskCard onDelete={() => handleDelete(item.task)} key={item.task} task={item} />)}
-            </div>
-
+            </SimpleGrid>
+            <DrawerComponent callbackData={getData} />
         </Container>
     )
 
